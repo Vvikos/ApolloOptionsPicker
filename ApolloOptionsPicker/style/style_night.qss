@@ -1,0 +1,94 @@
+QMainWindow, QLabel#infoText {
+    color: #949499;
+}
+
+QListWidget, QTabWidget::pane, QTabBar::tab, QLabel#cornerText, QComboBox, QSpinBox, QLineEdit#constSuite, QLabel#cornerText {
+  border: 1px solid #4d4b4b;
+}
+
+QTabWidget::pane, QTabBar::tab:selected {
+  background: #141414;
+}
+
+QMainWindow, QTabBar::tab, QComboBox {
+  background: #222224;
+}
+
+QPushButton#upArrow, QSpinBox::up-button, QComboBox::down-arrow:on {
+    image: url(:/images/toparrow_n.png);
+}
+
+QPushButton#downArrow, QSpinBox::down-button, QComboBox::down-arrow {
+    image: url(:/images/botarrow_n.png);
+}
+
+QSpinBox::down-button:disabled, QComboBox::down-arrow:disabled {
+    image: url(:/images/botarrow_disabled.png);
+}
+
+QPushButton#upArrow:hover, QSpinBox::up-button:hover:!pressed {
+    image: url(:/images/toparrow_n_hover.png);
+}
+
+QPushButton#downArrow:hover:!pressed, QSpinBox::down-button:hover:!pressed {
+    image: url(:/images/botarrow_n_hover.png);
+}
+
+QListWidget:disabled {
+    border: 1px solid #2e2b2b;
+}
+
+QListWidget::item:hover:!selected {
+    background: #2b2b2b;
+}
+
+/* Tab widget */
+QTabBar::close-button {
+    image: url(:/images/cross_n.png);
+}
+
+QTabBar::close-button:hover {
+    image: url(:/images/cross_n_negativ.png);
+}
+
+/* comboboxes & spinboxes */
+QComboBox, QSpinBox {
+    border-radius: 2px;
+    background-color: white;
+}
+
+QComboBox:item {
+    background-color: gray;
+    color: white;
+}
+
+QComboBox:item:selected {
+    background-color: #defcf7;
+    color: black;
+}
+
+QSpinBox::up-button:disabled {
+    image: url(:/images/toparrow_disabled.png);
+}
+
+QPushButton#miniSet:disabled {
+    background: #292929;
+    color: #474747;
+}
+
+QCheckBox::indicator:checked:disabled {
+    image: url(:/images/switch_on_disabled_n.png);
+}
+
+QCheckBox::indicator:!checked:disabled {
+    image: url(:/images/switch_off_disabled_n.png);
+}
+
+QWidget {
+    background-color: #222224;
+    color: white;
+}
+
+QWidget:disabled {
+    color: #949499;
+}
