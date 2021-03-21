@@ -430,10 +430,13 @@ void Dashboard::updateTuplesCount(int rank){
     for(auto it=options.begin(); it!=options.end() && !limit; ++it)
         total += (*it)->getNbTuples();
 
-    if(total > LIMIT_TUPLES)
+    if(total==0){
+        cornerText->setText("0");
+        return;
+    }else if(total > LIMIT_TUPLES)
         total = LIMIT_TUPLES;
 
-    QString n = QString::number(total);
+    QString n = QString::number(total-1);
     std::reverse(n.begin(), n.end());
     n = n.replace(QRegularExpression("(.{3})"), "\\1 ");
     std::reverse(n.begin(), n.end());
