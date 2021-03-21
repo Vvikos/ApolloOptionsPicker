@@ -1,9 +1,0 @@
-[Desktop Entry]
-Type=Application
-Encoding=UTF-8
-Name=ApolloOptionsPicker
-Comment=Options picker for apolloc
-Exec=app_image
-Icon=app_image
-Terminal=false
-Comment[fr_FR.UTF-8]=AOP
