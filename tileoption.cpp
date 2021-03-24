@@ -276,6 +276,13 @@ Matrix *TileOption::getTileTuples(){
     int nOpts = suitesData.size();
     Matrix *suites = new Matrix();
 
+    if(!checkTile->isChecked()){
+        vector<int> v;
+        v.push_back(1);
+        suites->push_back(v);
+        return suites;
+    }
+
     // Generate all suites
     for (int i = 0; i<nOpts; i++){
         if (suitesData[i].at(0)){

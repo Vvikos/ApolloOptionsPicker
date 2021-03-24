@@ -16,6 +16,7 @@ MainWindow::MainWindow(QWidget *parent) :
     dashboard = new Dashboard(ui->infoText, ui->progressBar, this);
     ui->DashboardLayout->addWidget(dashboard);
 
+    // Bouton d'ajout de set d'options
     // Bouton d'ajout d'un tab
     connect(dashboard, SIGNAL(tabCloseRequested(int)), this, SLOT(close(int)));
     // Fichier menu section

@@ -202,8 +202,10 @@ void Dashboard::exportCurrent(QString path){
         QTextStream out(&file);
 
         Matrix *tilingOpt = (*it)->getTileTuples();
-        if(tilingOpt==NULL)
+
+        if(tilingOpt==nullptr)
             break;
+
         for (auto it2=tilingOpt->begin(); it2!=tilingOpt->end(); ++it2){
             out << (*it)->getParaIdx() << "," << (*it)->getTileIdx() << "," << (*it)->getIntraOptIdx() << ",";
             out << (*it)->get2TileIdx() << "," << (*it)->getIdentIdx() << "," << (*it)->getRarIdx() << ",";
@@ -219,11 +221,9 @@ void Dashboard::exportCurrent(QString path){
             out << ";";
             total++;
         }
-
         optSetAnalyzed++;
         float prct = (float)optSetAnalyzed/(float)optSetCount * 99.;
         progressBar->setValue(prct);
-        delete tilingOpt;
     }
     file.close();
     progressBar->setValue(0);
@@ -430,13 +430,10 @@ void Dashboard::updateTuplesCount(int rank){
     for(auto it=options.begin(); it!=options.end() && !limit; ++it)
         total += (*it)->getNbTuples();
 
-    if(total==0){
-        cornerText->setText("0");
-        return;
-    }else if(total > LIMIT_TUPLES)
+    if(total > LIMIT_TUPLES)
         total = LIMIT_TUPLES;
 
-    QString n = QString::number(total-1);
+    QString n = QString::number(total);
     std::reverse(n.begin(), n.end());
     n = n.replace(QRegularExpression("(.{3})"), "\\1 ");
     std::reverse(n.begin(), n.end());
