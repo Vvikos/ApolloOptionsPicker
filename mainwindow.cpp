@@ -19,6 +19,7 @@ MainWindow::MainWindow(QWidget *parent) :
     // Bouton d'ajout de set d'options
     // Bouton d'ajout d'un tab
     connect(dashboard, SIGNAL(tabCloseRequested(int)), this, SLOT(close(int)));
+    connect(dashboard, SIGNAL(currentChanged(int)), this, SLOT(updateFileButtons(int)));
     // Fichier menu section
     connect(ui->actionNouveau, SIGNAL(triggered()), dashboard, SLOT(appendTab()));
     connect(ui->actionOuvrir, SIGNAL(triggered()), this, SLOT(open()));
@@ -53,7 +54,7 @@ void MainWindow::setInfoText(QString s) {
 // SLOTS
 void MainWindow::open(){
     QString path = QFileDialog::getOpenFileName(this,
-        tr("Open file"), lastOpenPath, tr("AOP files (*.aop *.csv);; All Files (*)"));
+        tr("Open file"), lastOpenPath, tr("AOP files (*.aop);; All Files (*)"));
 
     if(path.isEmpty())
         return;
@@ -89,7 +90,7 @@ void MainWindow::save(){
 
     // get save path if not already defined
     if (!dashboard->isCurrentSaved())
-        path = QFileDialog::getSaveFileName(this, "Choose file path", lastSavePath, "AOP files (*.aop *.csv);; All Files (*)");
+        path = QFileDialog::getSaveFileName(this, "Choose file path", lastSavePath, "AOP files (*.aop);; All Files (*)");
     else if(!dashboard->isCurrentSaved()){
         QMessageBox::StandardButton reply;
         reply = QMessageBox::question(this, "Save", "Content of file has been changed, save changes?",
@@ -114,7 +115,7 @@ void MainWindow::saveAs(){
     if(dashboard->isBoardEmpty())
         return;
 
-    QString path = QFileDialog::getSaveFileName(this, "Choose file path", lastSavePath, "AOP files (*.aop *.csv);; All Files (*)" );
+    QString path = QFileDialog::getSaveFileName(this, "Choose file path", lastSavePath, "AOP files (*.aop);; All Files (*)" );
 
     if (path.isEmpty())
         return;
@@ -180,5 +181,19 @@ void MainWindow::about(){
                    "\n\nThank you."
                    );
     msgBox.exec();
+}
+
+void MainWindow::updateFileButtons(int rank){
+    (void) rank;
+    bool enabled = true;
+
+    if(dashboard->isBoardEmpty())
+        enabled = false;
+
+    ui->actionEnregistrer->setEnabled(enabled);
+    ui->actionEnregistrer_sous->setEnabled(enabled);
+    ui->actionExporter->setEnabled(enabled);
+    ui->actionFermer->setEnabled(enabled);
+    ui->actionAjouter_ligne->setEnabled(enabled);
 }
 

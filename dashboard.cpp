@@ -72,21 +72,23 @@ void Dashboard::loadFileCurrent(QString path) {
     if(path.isEmpty())
         return;
 
-    int rank = count()-1;
-    createTab(false);
-    Tabs[rank]->filePath = path;
-
     QFile file(path);
     if(!file.open(QIODevice::ReadOnly)) {
         setInfoText("Couln't open file.");
         return;
     }
 
+    int rank = count()-1;
+    createTab(false);
+    Tabs[rank]->filePath = path;
+
     QTextStream in(&file);
     // Load every row from file
     while (!in.atEnd()) {
       QString line = in.readLine();
       QStringList opts = line.split(',');
+      if(opts.size()<14)
+          break;
       int idxPara = opts[0].toInt();
       int idxTile = opts[1].toInt();
       int idxIntraOpt = opts[2].toInt();
@@ -404,7 +406,7 @@ void Dashboard::closeCurrent(){
 
 
 void Dashboard::addOption(){
-    if (Tabs.size() <= 1)
+    if (isBoardEmpty())
         return;
 
     int nrows = Tabs[currentIndex()]->numberRows;

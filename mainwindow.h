@@ -42,6 +42,7 @@ private slots:
     void exportCsv();
     void switchMode(bool val);
     void about();
+    void updateFileButtons(int rank);
 };
 
 #endif // MAINWINDOW_H
