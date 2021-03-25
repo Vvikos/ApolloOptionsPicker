@@ -53,7 +53,7 @@ void MainWindow::setInfoText(QString s) {
 // SLOTS
 void MainWindow::open(){
     QString path = QFileDialog::getOpenFileName(this,
-        tr("Open file"), lastOpenPath, tr("All Files (*) ;;Text files (*.csv *.txt)"));
+        tr("Open file"), lastOpenPath, tr("AOP files (*.aop *.csv);; All Files (*)"));
 
     if(path.isEmpty())
         return;
@@ -68,7 +68,10 @@ void MainWindow::close(int rank){
 }
 
 void MainWindow::close(){
-    if(dashboard->getCurrentCount() > 0){
+    if(dashboard->isBoardEmpty())
+        return;
+
+    if(!dashboard->isCurrentSaved()){
         QMessageBox::StandardButton reply;
         reply = QMessageBox::question(this, "Save", "Content of file has been changed, save changes?",
                                         QMessageBox::Yes|QMessageBox::No);
@@ -79,11 +82,14 @@ void MainWindow::close(){
 }
 
 void MainWindow::save(){
+    if(dashboard->isBoardEmpty())
+        return;
+
     QString path = dashboard->getCurrentPath();
 
     // get save path if not already defined
-    if (path=="")
-        path = QFileDialog::getSaveFileName(this, "Choose file path", lastSavePath, "All Files (*);; Text files (*.txt *.csv)");
+    if (!dashboard->isCurrentSaved())
+        path = QFileDialog::getSaveFileName(this, "Choose file path", lastSavePath, "AOP files (*.aop *.csv);; All Files (*)");
     else if(!dashboard->isCurrentSaved()){
         QMessageBox::StandardButton reply;
         reply = QMessageBox::question(this, "Save", "Content of file has been changed, save changes?",
@@ -94,25 +100,40 @@ void MainWindow::save(){
     if (path.isEmpty())
         return;
 
+    QRegularExpression re("\\w+.aop");
+    QRegularExpressionMatch match = re.match(path);
+
+    if (!match.hasMatch())
+        path += ".aop";
+
     dashboard->saveCurrent(path);
     lastSavePath = path;
 }
 
 void MainWindow::saveAs(){
-    QString path = QFileDialog::getSaveFileName(this, "Choose file path", lastSavePath, "All Files (*);; Text files (*.txt *.csv)" );
+    if(dashboard->isBoardEmpty())
+        return;
+
+    QString path = QFileDialog::getSaveFileName(this, "Choose file path", lastSavePath, "AOP files (*.aop *.csv);; All Files (*)" );
 
     if (path.isEmpty())
         return;
+
+    QRegularExpression re("\\w+.aop");
+    QRegularExpressionMatch match = re.match(path);
+
+    if (!match.hasMatch())
+        path += ".aop";
 
     dashboard->saveCurrent(path);
     lastSavePath = path;
 }
 
 void MainWindow::exportCsv(){
-    if (dashboard->count() <= 1)
+    if(dashboard->isBoardEmpty())
         return;
 
-    QString path = QFileDialog::getSaveFileName(this, "Choose file path", lastSavePath, "All Files (*);; Text files (*.txt *.csv)" );
+    QString path = QFileDialog::getSaveFileName(this, "Choose file path", lastSavePath, "Options files (*.options);; All Files (*)" );
 
     if (path.isEmpty())
         return;

@@ -32,6 +32,7 @@ public:
     int getCurrentCount();
     QString getCurrentPath();
     QVBoxLayout *getCurrentLayout();
+    bool isBoardEmpty();
     bool isCurrentSaved();
     void setInfoText(QString s);
     void loadFileCurrent(QString path);

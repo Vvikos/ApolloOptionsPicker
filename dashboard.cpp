@@ -55,8 +55,13 @@ QVBoxLayout *Dashboard::getCurrentLayout(){
     return Tabs[currentIndex()]->layout;
 }
 
+bool Dashboard::isBoardEmpty(){
+    return count()<=1;
+}
+
 bool Dashboard::isCurrentSaved(){
-    return Tabs[currentIndex()]->saved;
+    bool exists = QFile::exists(Tabs[currentIndex()]->filePath);
+    return Tabs[currentIndex()]->saved && exists;
 }
 
 void Dashboard::setInfoText(QString s){
@@ -298,6 +303,8 @@ void Dashboard::permutRows(int i1, int i2) {
     otherRow->setUnrollFIdx(idxUnrollF);
     otherRow->setIslIdx(idxIsl);
     otherRow->setTileOptions(idxTile, idxIntraOpt, idx2Tile, idxPartTile, idxLbTile, tiling);
+
+    updateCurrentTuplesCount();
 }
 
 
@@ -385,6 +392,7 @@ void Dashboard::closeTab(int rank){
     Tabs.removeAt(rank);
     removeTab(rank);
     setCurrentIndex(rank-1);
+    updateTuplesCount(rank-1);
     setInfoText("File successfully closed.");
 }
 
@@ -423,17 +431,21 @@ void Dashboard::updateCurrentRows(int rank){
 }
 
 void Dashboard::updateTuplesCount(int rank){
+    if(count() <= 1){
+        cornerText->setText("NaN");
+        return;
+    }
+
     QList<OptionSet *> options = widget(rank)->findChildren<OptionSet *>();
     unsigned long total = 0;
-    bool limit = false;
 
-    for(auto it=options.begin(); it!=options.end() && !limit; ++it)
+    for(auto it=options.begin(); it!=options.end(); ++it)
         total += (*it)->getNbTuples();
 
     if(total > LIMIT_TUPLES)
         total = LIMIT_TUPLES;
 
-    QString n = QString::number(total);
+    QString n = QString::number(total-1);
     std::reverse(n.begin(), n.end());
     n = n.replace(QRegularExpression("(.{3})"), "\\1 ");
     std::reverse(n.begin(), n.end());
