@@ -1,5 +1,7 @@
 Makefile
 *.user
 *.o
+*.cpp
+*.h
 ApolloOptionsPicker
 
