@@ -444,6 +444,11 @@ void Dashboard::updateTuplesCount(int rank){
     for(auto it=options.begin(); it!=options.end(); ++it)
         total += (*it)->getNbTuples();
 
+    if(total < 1){
+        cornerText->setText(QString::number(total));
+        return;
+    }
+
     if(total > LIMIT_TUPLES)
         total = LIMIT_TUPLES;
 
