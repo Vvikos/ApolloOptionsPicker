@@ -1,4 +1,6 @@
 Makefile
+.qmake.stash
+apollooptionspicker_plugin_import.cpp
 *.user
 *.o
 ApolloOptionsPicker
